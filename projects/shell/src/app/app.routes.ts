@@ -19,12 +19,6 @@ export const routes: Routes = [
             })
                 .then(m => m.MFE1_ROUTES)
     },
-
-    // {
-    //     path: 'booking',
-    //     loadChildren: () => import('mfe1/routes').then(m => m.MFE1_ROUTES)
-    // },
-
     {
         path: '**',
         component: NotFoundComponent

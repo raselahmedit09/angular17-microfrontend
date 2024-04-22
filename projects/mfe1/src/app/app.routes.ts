@@ -16,5 +16,9 @@ export const MFE1_ROUTES: Routes = [
     {
         path: 'passenger-search',
         component: PassengerSearchComponent
-    }
+    },
+    {
+        path: '',
+        loadChildren: () => import('./routes/dashboard/dashboard.routes').then(routes => routes.DASHBOARD_ROUTES)
+    },
 ];
