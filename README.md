@@ -8,9 +8,11 @@ Run `ng serve shell` for a dev server. Navigate to `http://localhost:4200/`.
 Run `ng serve mfe1` for a dev server. Navigate to `http://localhost:4201/`. 
 The application will automatically reload if you change any of the source files.   
 
-Access mfe1 app: example:   
-Try: http://localhost:4200/mfe1/flight-search   
-http://localhost:4200/mfe1/passenger-search
+## Libraries and Pipes
+
+Breadcrumb  
+DatePipe    
+
 
 ## Code scaffolding
 
