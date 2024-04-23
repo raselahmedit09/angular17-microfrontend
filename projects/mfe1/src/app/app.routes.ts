@@ -8,7 +8,7 @@ export const MFE1_ROUTES: Routes = [
         path: 'mfe1',
         component: HomeComponent,
         pathMatch: 'full',
-        data: { breadcrumb: 'mfe home', }
+        data: { breadcrumb: 'mfe1 home', }
     },
     {
         path: 'mfe1', data: { breadcrumb: 'mfe1', },
