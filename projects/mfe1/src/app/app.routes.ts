@@ -5,20 +5,20 @@ import { PassengerSearchComponent } from './passenger-search/passenger-search.co
 
 export const MFE1_ROUTES: Routes = [
     {
-        path: '',
+        path: 'mfe1',
         component: HomeComponent,
-        pathMatch: 'full'
+        pathMatch: 'full',
+        data: { breadcrumb: 'mfe home', }
     },
     {
-        path: 'flight-search',
-        component: FlightSearchComponent
+        path: 'mfe1', data: { breadcrumb: 'mfe1', },
+        children: [
+            { path: 'flight-search', component: FlightSearchComponent, data: { breadcrumb: 'flight' } },
+            { path: 'passenger-search', component: FlightSearchComponent, data: { breadcrumb: 'passenger' } },
+        ]
     },
     {
-        path: 'passenger-search',
-        component: PassengerSearchComponent
-    },
-    {
-        path: '',
+        path: 'mfe1', data: { breadcrumb: 'mfe1', },
         loadChildren: () => import('./routes/dashboard/dashboard.routes').then(routes => routes.DASHBOARD_ROUTES)
     },
 ];

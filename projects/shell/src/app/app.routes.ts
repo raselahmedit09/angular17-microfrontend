@@ -10,7 +10,7 @@ export const routes: Routes = [
         pathMatch: 'full'
     },
     {
-        path: 'mfe1',
+        path: '',
         loadChildren: () =>
             loadRemoteModule({
                 type: 'module',
