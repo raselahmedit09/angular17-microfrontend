@@ -20,6 +20,16 @@ export const routes: Routes = [
                 .then(m => m.MFE1_ROUTES)
     },
     {
+        path: '',
+        loadChildren: () =>
+            loadRemoteModule({
+                type: 'module',
+                remoteEntry: 'http://localhost:4202/remoteEntry.js',
+                exposedModule: './routes'
+            })
+                .then(m => m.MFE2_ROUTES)
+    },
+    {
         path: '**',
         component: NotFoundComponent
     }

@@ -5,7 +5,8 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 ## Development server
 
 Run `ng serve shell` for a dev server. Navigate to `http://localhost:4200/`.    
-Run `ng serve mfe1` for a dev server. Navigate to `http://localhost:4201/`. 
+Run `ng serve mfe1` for a dev server. Navigate to `http://localhost:4201/`.     
+Run `ng serve mfe2` for a dev server. Navigate to `http://localhost:4202/`.          
 The application will automatically reload if you change any of the source files.   
 
 ## Libraries and Pipes
