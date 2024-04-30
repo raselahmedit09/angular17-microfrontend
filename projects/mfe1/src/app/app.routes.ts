@@ -14,7 +14,7 @@ export const MFE1_ROUTES: Routes = [
         path: 'mfe1', data: { breadcrumb: 'mfe1', },
         children: [
             { path: 'flight-search', component: FlightSearchComponent, data: { breadcrumb: 'flight' } },
-            { path: 'passenger-search', component: FlightSearchComponent, data: { breadcrumb: 'passenger' } },
+            { path: 'passenger-search', component: PassengerSearchComponent, data: { breadcrumb: 'passenger' } },
         ]
     },
     {
