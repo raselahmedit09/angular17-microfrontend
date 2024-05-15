@@ -24,19 +24,30 @@ jobs:
       with:
         node-version: '18'
         
+    - name: Cache node_modules
+      uses: actions/cache@v2
+      with:
+         path: |
+          **/node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+          ${{ runner.os }}-node-
+         
+        
     - name: Install dependencies
-      run: npm install
-
-    - name: Build shell project
-      run: npm run build shell
-    - name: Build mfe1
-      run: npm run build mfe1
-    - name: Build mfe2
-      run: npm run build mfe2
-      
-      
-    
-      
+      run:  |
+        cd ${{ matrix.microfrontend }}
+        npm install
+        
+    - name: Build project
+      run: |
+        cd ${{ matrix.microfrontend }}
+        npm run build --if-present
+        
+    - name: Run tests
+      run: |
+        cd ${{ matrix.microfrontend }}
+        npm test
       
       
       
