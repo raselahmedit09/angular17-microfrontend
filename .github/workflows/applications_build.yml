@@ -11,7 +11,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
+    
     strategy:
       matrix:
         # Define a matrix to build and test each microfrontend separately
@@ -47,5 +47,6 @@ jobs:
     - name: Build project
       run: |
         cd projects
+           |
         cd ${{ matrix.microfrontend }}
         npm run build --if-present
