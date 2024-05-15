@@ -44,9 +44,11 @@ jobs:
       run: npm install
 
     # Build each microfrontend
-    - name: Build project
+    - name: add directory 
       run: |
         cd projects
-           |
+
+    - name: Build project
+      run: |
         cd ${{ matrix.microfrontend }}
         npm run build --if-present
