@@ -41,9 +41,7 @@ jobs:
 
     # Navigate to each microfrontend directory and install dependencies
     - name: Install dependencies
-      run: |
-        cd ${{ matrix.microfrontend }}
-        npm install
+      run: npm install
 
     # Build each microfrontend
     - name: Build project
