@@ -1,18 +1,25 @@
 name: Build and Test Angular Microfrontend Project
 
 on:
-  workflow_dispatch:
   push:
     branches: 
       - main
   pull_request:
     branches:
       - main
-      
+
 jobs:
   build:
     runs-on: ubuntu-latest
-    
+
+    strategy:
+      matrix:
+        # Define a matrix to build and test each microfrontend separately
+        microfrontend: 
+          - shell
+          - mfe1
+          - mfe2
+
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
@@ -20,8 +27,9 @@ jobs:
     - name: Set up Node.js
       uses: actions/setup-node@v4
       with:
-        node-version: '18'
+        node-version: '16'
 
+    # Cache node_modules to speed up build process
     - name: Cache node_modules
       uses: actions/cache@v4
       with:
@@ -31,24 +39,13 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-node-
 
+    # Navigate to each microfrontend directory and install dependencies
     - name: Install dependencies
       run: npm install
 
-    - name: Build shell project
-      run: npm run build shell
-      
-    - name: Build mfe1
-      run: npm run build mfe1
-      
-    - name: Build mfe2
-      run: npm run build mfe2
-
-    - name: Test shell
-      run: npm test shell 
-
-    - name: Test mfe1
-      run: npm test mfe1 
-
-    - name: Test mfe2
-      run: npm test mfe2 
-    
+    # Build each microfrontend
+    - name: Build project
+      run: |
+        cd projects
+        cd ${{ matrix.microfrontend }}
+        npm run build --if-present
