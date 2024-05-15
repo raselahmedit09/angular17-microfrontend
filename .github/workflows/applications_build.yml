@@ -16,6 +16,7 @@ jobs:
       matrix:
         # Define a matrix to build and test each microfrontend separately
         microfrontend: 
+          - lib1
           - shell
           - mfe1
           - mfe2
