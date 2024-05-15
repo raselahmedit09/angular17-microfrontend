@@ -46,5 +46,7 @@ jobs:
     - name: Build project
       run: |
         cd projects
-        cd ${{ matrix.microfrontend }}
+        
+    - name: Build project
+      run: 
         ng build ${{ matrix.microfrontend }}
