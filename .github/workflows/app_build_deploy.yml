@@ -50,7 +50,7 @@ jobs:
         run: npm run build ${{ matrix.microfrontend }}
 
   deploy:
-    needs:[build]
+    needs:  build
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
