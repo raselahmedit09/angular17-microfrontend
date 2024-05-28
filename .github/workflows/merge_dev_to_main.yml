@@ -17,7 +17,7 @@ jobs:
         ref: main
     
     - name: Merge dev into main
-      run: git merge --no-ff origin/dev -m "Merge dev into main"
+      run: git merge --no-ff dev -m "Merge dev into main"
       
     - name: Push changes
       uses: ad-m/github-push-action@master
