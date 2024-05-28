@@ -1,7 +1,6 @@
 name: Merge dev to main
 
 on:
-  workflow_dispatch:
   push:
     branches:
       - dev
@@ -12,10 +11,13 @@ jobs:
     
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v4
+      uses: actions/checkout@v2
+      
+    - name: Switch to main branch
+      run: git checkout main
       
     - name: Merge dev into main
-      run: |
-        git checkout main
-        git merge --no-ff origin/dev -m "Merge dev into main"
-        git push origin main
+      run: git merge origin/dev --no-ff -m "Merge dev into main"
+      
+    - name: Push changes to main
+      run: git push origin main
