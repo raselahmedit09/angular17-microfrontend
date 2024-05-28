@@ -10,14 +10,15 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-    - name: Checkout repository
+    - name: Checkout main
       uses: actions/checkout@v2
-      
-    - name: Switch to main branch
-      run: git checkout main
-      
+      with:
+        ref: main
+    
     - name: Merge dev into main
-      run: git merge origin/dev --no-ff -m "Merge dev into main"
+      run: git merge --no-ff origin/dev -m "Merge dev into main"
       
-    - name: Push changes to main
-      run: git push origin main
+    - name: Push changes
+      uses: ad-m/github-push-action@master
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
