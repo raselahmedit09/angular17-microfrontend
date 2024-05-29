@@ -1,6 +1,7 @@
 name: Compare and Pull Request
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - dev
