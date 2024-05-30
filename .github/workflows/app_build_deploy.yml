@@ -53,7 +53,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: build-artifacts
-          path: ./dist  
+          path: dist  
 
   deploy:
     needs:  build
@@ -63,11 +63,11 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: build-artifacts
-          path: ./dist
+          path: dist
 
       - name: Deploy
         run: echo "Deploying ..."
-        
+
       # Add deployment steps here
       # For example, deploying to GitHub Pages
       - name: Deploy to GitHub Pages
