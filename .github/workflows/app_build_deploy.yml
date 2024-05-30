@@ -52,27 +52,25 @@ jobs:
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: build-artifacts
-          path: dist  
+          name: ${{ matrix.microfrontend }}-build-artifacts
+          path: ${{ matrix.microfrontend }}/dist
 
   deploy:
     needs:  build
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
       - name: Download artifacts
         uses: actions/download-artifact@v4
         with:
-          name: build-artifacts
-          path: dist
+          name: ${{ matrix.microfrontend }}-build-artifacts
+          path: ./dist/${{ matrix.microfrontend }}
 
-      - name: Deploy
-        run: echo "Deploying ..."
-
-      # Add deployment steps here
-      # For example, deploying to GitHub Pages
+      # Deploy steps here
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist  
-
+          publish_dir: ./dist
