@@ -12,7 +12,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
     strategy:
       matrix:
         # Define a matrix to build and test each microfrontend separately
@@ -21,7 +20,6 @@ jobs:
           - shell
           - mfe1
           - mfe2
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -58,6 +56,14 @@ jobs:
   deploy:
     needs:  build
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        # Define a matrix to build and test each microfrontend separately
+        microfrontend: 
+          - lib1
+          - shell
+          - mfe1
+          - mfe2
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
