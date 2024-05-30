@@ -66,11 +66,11 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: ${{ matrix.microfrontend }}-build-artifacts
-          path: ./dist/${{ matrix.microfrontend }}
+          path: dist/${{ matrix.microfrontend }}
 
       # Deploy steps here
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist
+          publish_dir: dist
