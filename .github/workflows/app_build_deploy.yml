@@ -53,7 +53,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.microfrontend }}-build-artifacts
-          path: ${{ matrix.microfrontend }}/dist
+          path: dist/${{ matrix.microfrontend }}
 
   deploy:
     needs:  build
