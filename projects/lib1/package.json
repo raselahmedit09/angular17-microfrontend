@@ -1,5 +1,5 @@
 {
-  "name": "lib1",
+  "name": "@raselahmedit09/lib1",
   "version": "0.0.1",
   "peerDependencies": {
     "@angular/common": "^17.3.0",
@@ -8,5 +8,17 @@
   "dependencies": {
     "tslib": "^2.3.0"
   },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/raselahmedit09/angular17-microfrontend.git"
+  },
+  "author": {
+    "name": "Rasel Ahmed",
+    "email": "rasel.ict09@gmail.com"
+  },
+  "license": "Test license",
   "sideEffects": false
 }
