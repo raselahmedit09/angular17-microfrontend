@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
-import { BreadcrumbComponent } from "../../../lib1/src/lib/components/breadcrumb/breadcrumb.component";
 import { CommonModule } from '@angular/common';
 import { DateFormatPipe } from "../../../lib1/src/lib/pipes/date-format.pipe";
+import { BreadcrumbComponent } from 'lib1';
 
 @Component({
   selector: 'app-root',
