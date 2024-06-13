@@ -6,7 +6,7 @@ module.exports = withModuleFederationPlugin({
 
   exposes: {
     "./routes": "./projects/mfe2/src/app/app.routes.ts",
-
+    "./navbarComponent": "./projects/mfe2/src/app/navbar/navbar.component.ts"
   },
 
   shared: {

@@ -2,13 +2,18 @@
 
 <ul>
   <li><a routerLink="">Shell App</a></li>
-  <li><a routerLink="/mfe1">Mfe1 App</a></li>
-  <li><a routerLink="/mfe2">Mfe2 App</a></li>
+  <li><a routerLink="/mfe1" (click)="onLoadNavbar('mfe1')">Mfe1 App</a></li>
+  <li><a routerLink="/mfe2" (click)="onLoadNavbar('mfe2')">Mfe2 App</a></li>
 </ul>
 
 
 <p>Today: {{date | dateFormatPipe:true}}</p>
 <br>
+
+<!-- nav bar loadded from remote app -->
+<ng-container *ngComponentOutlet="navbarComponent"></ng-container>
+
+
 
 <lib-breadcrumb></lib-breadcrumb>
 <br>
