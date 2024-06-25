@@ -1,13 +1,17 @@
-<h1>Hello, {{ title }}</h1>
+<h1>{{ 'welcomeMsg' | translate }}</h1>
+
+<p>{{ 'locale.label' | translate }}</p>
+<button (click)="switchLanguage('en')">{{ 'language.en' | translate }}</button>
+<button (click)="switchLanguage('sp')">{{ 'language.sp' | translate }}</button>
 
 <ul>
-  <li><a routerLink="">Shell App</a></li>
-  <li><a routerLink="/mfe1" (click)="onLoadNavbar('mfe1')">Mfe1 App</a></li>
-  <li><a routerLink="/mfe2" (click)="onLoadNavbar('mfe2')">Mfe2 App</a></li>
+  <li><a routerLink="">{{ 'menu.shell' | translate }}</a></li>
+  <li><a routerLink="/mfe1" (click)="onLoadNavbar('mfe1')">{{ 'menu.mfe1' | translate }}</a></li>
+  <li><a routerLink="/mfe2" (click)="onLoadNavbar('mfe2')">{{ 'menu.mfe2' | translate }}</a></li>
 </ul>
 
 
-<p>Today: {{date | dateFormatPipe:true}}</p>
+<p>{{'today' | translate }}: {{date | dateFormatPipe:true}}</p>
 <br>
 
 <!-- nav bar loadded from remote app -->

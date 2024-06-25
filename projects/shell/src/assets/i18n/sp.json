@@ -1,0 +1,16 @@
+{
+    "welcomeMsg": "Bienvenido a nuestra aplicación",
+    "menu": {
+        "shell": "Aplicación Shell",
+        "mfe1": "Aplicación MFE_1",
+        "mfe2": "Aplicación MFE_2"
+    },
+    "language": {
+        "en": "Inglese",
+        "sp": "Spanish"
+    },
+    "locale": {
+        "label": "Seleccione el idioma"
+    },
+    "today": "Hoy"
+}
