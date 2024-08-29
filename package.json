@@ -7,7 +7,9 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "run:all": "node node_modules/@angular-architects/module-federation/src/server/mf-dev-server.js"
+    "run:all": "node node_modules/@angular-architects/module-federation/src/server/mf-dev-server.js",
+    "generate:WeatherForecast_Api_Service": "openapi-generator-cli generate -i http://localhost:5256/swagger/v1/swagger.json -g typescript-angular  -o lib-api/api-WeatherForecast -p=removeOperationIdPrefix=true --additional-properties=apiModulePrefix=WeatherForecast,configurationPrefix=WeatherForecastApi ",
+    "generate:HrManagement_Api_Service": "openapi-generator-cli generate -i http://localhost:7092/swagger/v1/swagger.json -g typescript-angular  -o lib-api/api-HrManagement -p=removeOperationIdPrefix=true --additional-properties=apiModulePrefix=HrManagement,configurationPrefix=HrManagementApi "
   },
   "private": true,
   "dependencies": {
@@ -30,6 +32,7 @@
     "@angular-devkit/build-angular": "^17.3.5",
     "@angular/cli": "^17.3.3",
     "@angular/compiler-cli": "^17.3.0",
+    "@openapitools/openapi-generator-cli": "^2.13.5",
     "@types/jasmine": "~5.1.0",
     "jasmine-core": "~5.1.0",
     "karma": "~6.4.0",
