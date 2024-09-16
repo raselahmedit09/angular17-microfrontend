@@ -29,7 +29,11 @@ or
 > npm cache clean 
 > npm audit fix --focce
 
-if you getting error then remove "@raselahmedit09/lib1": "^0.0.1" from package.json  file and try again.  
+if you getting error then remove "@raselahmedit09/lib1": "^0.0.1" from package.json  file and try again.
+Remove the package reference & use local library reference in the project files as well.
+
+use import { BreadcrumbComponent } from '../../../lib1/src/lib/components/breadcrumb/breadcrumb.component'
+instead of import { BreadcrumbComponent } from 'lib1' in Shell > app.component.ts file 
 ```
 ## Run
 ```sh
