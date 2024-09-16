@@ -30,7 +30,7 @@ jobs:
           node-version: '18'
           registry-url: 'https://npm.pkg.github.com/'
       
-      - name: Authenticate with GitHub Package Registry
+        # name: Authenticate with GitHub Package Registry
         # run: echo "//npm.pkg.github.com/:_authToken=${{secrets.GITHUB_TOKEN}}" > ~/.npmrc    
 
     # Cache node_modules to speed up build process
@@ -81,6 +81,6 @@ jobs:
       # Deploy steps here
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: dist
+        # with:
+          # github_token: ${{ secrets.GITHUB_TOKEN }}
+          # publish_dir: dist
