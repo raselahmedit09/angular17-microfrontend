@@ -1,5 +1,4 @@
 name: Build and Deploy Microfrontend App
-
 on:
   workflow_dispatch:
   push:
@@ -8,7 +7,6 @@ on:
   pull_request:
     branches:
       - main
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -23,16 +21,10 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '18'
-          registry-url: 'https://npm.pkg.github.com/'
-      
-        # name: Authenticate with GitHub Package Registry
-        # run: echo "//npm.pkg.github.com/:_authToken=${{secrets.GITHUB_TOKEN}}" > ~/.npmrc    
-
     # Cache node_modules to speed up build process
       - name: Cache node_modules
         uses: actions/cache@v4
@@ -42,11 +34,9 @@ jobs:
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
-
       # Navigate to each microfrontend directory and install dependencies
       - name: Install dependencies
         run: npm install
-
       # Build each microfrontend
       - name: Build project
         run: npm run build ${{ matrix.microfrontend }}
@@ -77,10 +67,3 @@ jobs:
         with:
           name: ${{ matrix.microfrontend }}-build-artifacts
           path: dist/${{ matrix.microfrontend }}
-
-      # Deploy steps here
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v4
-        # with:
-          # github_token: ${{ secrets.GITHUB_TOKEN }}
-          # publish_dir: dist
