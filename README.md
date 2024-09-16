@@ -15,12 +15,9 @@ This repository demonstrates an Angular 17 project structured with Module Federa
 - Breadcrumb Component: A shared breadcrumb component used to navigate through different sections of the application.
 - DatePipe   
 
-## Update .npmrc file (_authToken with given key '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')
-```sh
-registry=https://registry.npmjs.org/
-@raselahmedit09:registry=https://npm.pkg.github.com
-//npm.pkg.github.com/:_authToken=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
-```
+### Remove "@raselahmedit09/lib1": "^0.0.1" from package.json  file
+- use import { BreadcrumbComponent } from '../../../lib1/src/lib/components/breadcrumb/breadcrumb.component'
+- instead of import { BreadcrumbComponent } from 'lib1' in Shell > app.component.ts file
 
 ## Setup
 ```sh
@@ -28,12 +25,6 @@ registry=https://registry.npmjs.org/
 or 
 > npm cache clean 
 > npm audit fix --focce
-
-if you getting error then remove "@raselahmedit09/lib1": "^0.0.1" from package.json  file and try again.
-Remove the package reference & use local library reference in the project files as well.
-
-use import { BreadcrumbComponent } from '../../../lib1/src/lib/components/breadcrumb/breadcrumb.component'
-instead of import { BreadcrumbComponent } from 'lib1' in Shell > app.component.ts file 
 ```
 ## Run
 ```sh
