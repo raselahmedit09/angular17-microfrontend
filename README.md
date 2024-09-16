@@ -15,11 +15,11 @@ This repository demonstrates an Angular 17 project structured with Module Federa
 - Breadcrumb Component: A shared breadcrumb component used to navigate through different sections of the application.
 - DatePipe   
 
-## Update .npmrc file (_authToken with given key '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')
+## Update .npmrc file (_authToken with given key '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')
 ```sh
 registry=https://registry.npmjs.org/
 @raselahmedit09:registry=https://npm.pkg.github.com
-//npm.pkg.github.com/:_authToken=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
+//npm.pkg.github.com/:_authToken=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
 ```
 
 ## Setup
@@ -28,6 +28,8 @@ registry=https://registry.npmjs.org/
 or 
 > npm cache clean 
 > npm audit fix --focce
+
+if you getting error then remove "@raselahmedit09/lib1": "^0.0.1" from package.json  file and try again.  
 ```
 ## Run
 ```sh
