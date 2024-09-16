@@ -1,40 +1,42 @@
-# Microfrontend Angular 17
+# Angular Microfrontend Project with Module Federation
+This repository demonstrates an Angular 17 project structured with Module Federation. The architecture includes a shell application that serves as the host, two microfrontend (MFE) applications, and a shared library. The project leverages @angular-architects/module-federation for dynamic module loading and inter-app communication.
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.3.3.
+## The key components include:
 
-## Development server
+- Shell Project: The main host application that orchestrates the loading of micro frontends.
+- Microfrontend 1 (MFE1): A standalone Angular application that integrates with the shell via Module Federation.
+- Microfrontend 2 (MFE2): Another standalone Angular application, similar to MFE1, integrated with the shell.
+- Shared Library (Lib1): A library project containing common components and utilities used across the shell and micro frontends.
 
-Run `ng serve shell` for a dev server. Navigate to `http://localhost:4200/`.    
-Run `ng serve mfe1` for a dev server. Navigate to `http://localhost:4201/`.     
-Run `ng serve mfe2` for a dev server. Navigate to `http://localhost:4202/`.          
-The application will automatically reload if you change any of the source files.   
+## Features
+- Module Federation: Dynamic loading and sharing of Angular modules across different applications.
+- Shared Library: Common components and services shared between the shell and micro frontends.
+- Routing Integration: Seamless routing setup to handle navigation between the shell and micro frontends.
+- Breadcrumb Component: A shared breadcrumb component used to navigate through different sections of the application.
+- DatePipe   
 
-## Libraries and Pipes
+## Update .npmrc file (_authToken with given key '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')
+```sh
+registry=https://registry.npmjs.org/
+@raselahmedit09:registry=https://npm.pkg.github.com
+//npm.pkg.github.com/:_authToken=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
+```
 
-Breadcrumb  
-DatePipe    
-
-
-## Code scaffolding
-
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
-
-## Build
-
-Run `ng build shell` to build the shell project.    
-Run `ng build mfe1` to build the mfe1 project.    
-The build artifacts will be stored in the `dist/` directory.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
+## Setup
+```sh
+> npm install
+or 
+> npm cache clean 
+> npm audit fix --focce
+```
+## Run
+```sh
+> ng build lib1
+> ng serve shell -0 
+> ng serve mfe1
+> ng serve mfe2
+```
 ## Further help
-
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
 
 https://www.angulararchitects.io/en/blog/module-federation-with-angulars-standalone-components/
