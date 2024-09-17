@@ -29,7 +29,7 @@ or
 ## Run
 ```sh
 > ng build lib1
-> ng serve shell -0 
+> ng serve shell -o 
 > ng serve mfe1
 > ng serve mfe2
 ```
