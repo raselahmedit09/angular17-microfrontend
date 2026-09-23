@@ -19,7 +19,8 @@ This guide is meant to get a new developer productive end-to-end: setup, daily d
 9. [Shared library (lib1)](#shared-library-lib1)
 10. [Cross-app communication (dynamic navbar loading)](#cross-app-communication-dynamic-navbar-loading)
 11. [i18n / translation](#i18n--translation)
-12. [Common developer scenarios](#common-developer-scenarios)
+12. [Generating typed API clients (OpenAPI Generator)](#generating-typed-api-clients-openapi-generator)
+13. [Common developer scenarios](#common-developer-scenarios)
     - [Add a new page to an existing MFE](#scenario-a--add-a-new-page-to-an-existing-mfe)
     - [Expose a new route module from an MFE](#scenario-b--expose-a-new-route-module-from-an-mfe)
     - [Expose a new standalone component from an MFE](#scenario-c--expose-a-new-standalone-component-from-an-mfe)
@@ -27,12 +28,13 @@ This guide is meant to get a new developer productive end-to-end: setup, daily d
     - [Add something to the shared library](#scenario-e--add-something-to-the-shared-library)
     - [Consume lib1 as a published package vs. local source](#scenario-f--consume-lib1-as-a-published-package-vs-local-source)
     - [Point the shell at a deployed/staging MFE instead of localhost](#scenario-g--point-the-shell-at-a-deployedstaging-mfe-instead-of-localhost)
-13. [Building for production](#building-for-production)
-14. [CI/CD pipeline](#cicd-pipeline)
-15. [Testing](#testing)
-16. [VS Code tasks](#vs-code-tasks)
-17. [Troubleshooting](#troubleshooting)
-18. [Useful links](#useful-links)
+    - [Generate a new typed API client from a backend Swagger/OpenAPI doc](#scenario-h--generate-a-new-typed-api-client-from-a-backend-swaggeropenapi-doc)
+14. [Building for production](#building-for-production)
+15. [CI/CD pipeline](#cicd-pipeline)
+16. [Testing](#testing)
+17. [VS Code tasks](#vs-code-tasks)
+18. [Troubleshooting](#troubleshooting)
+19. [Useful links](#useful-links)
 
 ---
 
@@ -272,6 +274,58 @@ This is a **hand-rolled** i18n layer (not `@angular/localize` or `ngx-translate`
 
 ---
 
+## Generating typed API clients (OpenAPI Generator)
+
+The root [`package.json`](package.json) (note: it's still named `mfe1-app` from before this became a multi-project workspace — that's cosmetic only) defines two code-generation scripts built on [`@openapitools/openapi-generator-cli`](https://www.npmjs.com/package/@openapitools/openapi-generator-cli) (already a `devDependency`, so no extra install is needed beyond the initial `npm install`):
+
+```json
+"generate:WeatherForecast_Api_Service": "openapi-generator-cli generate -i http://localhost:5256/swagger/v1/swagger.json -g typescript-angular -o lib-api/api-WeatherForecast -p=removeOperationIdPrefix=true --additional-properties=apiModulePrefix=WeatherForecast,configurationPrefix=WeatherForecastApi",
+"generate:HrManagement_Api_Service": "openapi-generator-cli generate -i http://localhost:7092/swagger/v1/swagger.json -g typescript-angular -o lib-api/api-HrManagement -p=removeOperationIdPrefix=true --additional-properties=apiModulePrefix=HrManagement,configurationPrefix=HrManagementApi"
+```
+
+Each script points `openapi-generator-cli` at a **running backend's** live OpenAPI/Swagger document and generates a full `typescript-angular` client (models, services, an Angular module, and a configuration class) straight into `lib-api/<output-folder>`. `HrManagement_Api_Service` targets port **7092**, which is the HTTP profile of `HR.LeaveManagement.Api` in the sibling [`ASP.NET-Core-SOLID-and-Clean-Architecture-.NET-8`](../ASP.NET-Core-SOLID-and-Clean-Architecture-.NET-8) repo — this Angular workspace is meant to consume that .NET service's API through a generated client rather than hand-written `HttpClient` calls.
+
+### Prerequisite: Java
+
+`openapi-generator-cli` is a Node wrapper around the Java-based [OpenAPI Generator](https://openapi-generator.tech/); on first use it downloads the generator `.jar` and needs a **Java 8+ runtime** on `PATH` to run it. If `npm run generate:...` fails with something like `Error: spawn java ENOENT` or hangs on "Downloading...", install a JDK/JRE first (`java -version` should succeed).
+
+### Running a generator
+
+The **target backend must already be running** (see the .NET repo's guide for how to `dotnet run` each API) before you generate, since the CLI fetches the live `swagger.json` over HTTP:
+
+```sh
+# 1. start the backend in the other repo first, e.g.:
+#    cd ASP.NET-Core-SOLID-and-Clean-Architecture-.NET-8/ServiceApplications/LeaveManagement/API/HR.LeaveManagement.Api
+#    dotnet run
+# 2. then, from this repo:
+npm run generate:HrManagement_Api_Service
+npm run generate:WeatherForecast_Api_Service
+```
+
+This writes/overwrites `lib-api/api-HrManagement/` or `lib-api/api-WeatherForecast/` in full — **treat everything under `lib-api/` as generated code**; don't hand-edit it, since the next `npm run generate:...` will silently overwrite your changes. Neither `lib-api/` folder exists in a fresh checkout — you generate them locally the first time you need that API's client, and `lib-api/` is **not** currently listed in `.gitignore`, so if you commit generated output, review the diff (it can be large) rather than committing it by accident on an unrelated change.
+
+### `-p=removeOperationIdPrefix=true` and the module/configuration prefixes
+
+- `removeOperationIdPrefix=true` strips a controller-name prefix the generator would otherwise add to method names (e.g. so a `LeaveTypesController.Get()` action becomes a clean `get()`/`getAll()` client method instead of `leaveTypesGet()`).
+- `apiModulePrefix`/`configurationPrefix` exist specifically so **multiple generated clients can coexist in the same Angular app** without class-name collisions — `apiModulePrefix=HrManagement` produces an `HrManagementApiModule`, `configurationPrefix=HrManagementApi` produces an `HrManagementApiConfiguration`, and the `WeatherForecast` generation gets its own distinctly-named module/configuration pair.
+
+### Consuming a generated client
+
+Import the generated module and provide its configuration (typically with the API's base URL) wherever you bootstrap the app/feature that needs it:
+
+```ts
+import { HrManagementApiModule, HrManagementApiConfiguration } from '../../lib-api/api-HrManagement';
+
+// in an NgModule's imports, or via provideAppInitializer/APP_INITIALIZER for standalone apps:
+HrManagementApiModule.forRoot(() => new HrManagementApiConfiguration({
+  basePath: 'http://localhost:7092', // or through the Ocelot gateway, once routed correctly
+}))
+```
+
+Since the shell/MFEs in this workspace are standalone-component based (no `NgModule` bootstrap), prefer providing the configuration via a factory in `ApplicationConfig.providers` (`app.config.ts`) rather than `forRoot()`, unless you're consuming the generated module from a component that still uses `NgModule`-style imports.
+
+---
+
 ## Common developer scenarios
 
 ### Scenario A — Add a new page to an existing MFE
@@ -350,6 +404,18 @@ To point at a deployed MFE (staging/prod), either:
 
 There is no environment-file-based configuration for remote URLs in this repo today — treat that as a known gap if you're taking this to a real multi-environment deployment.
 
+### Scenario H — Generate a new typed API client from a backend Swagger/OpenAPI doc
+
+1. Start the target backend locally and confirm its Swagger doc is reachable, e.g. `http://localhost:<port>/swagger/v1/swagger.json` in a browser.
+2. Add a new script to the root `package.json`, copying the shape of the existing two, e.g.:
+   ```json
+   "generate:MyService_Api_Service": "openapi-generator-cli generate -i http://localhost:<port>/swagger/v1/swagger.json -g typescript-angular -o lib-api/api-MyService -p=removeOperationIdPrefix=true --additional-properties=apiModulePrefix=MyService,configurationPrefix=MyServiceApi"
+   ```
+   Give it a unique `-o` output folder and unique `apiModulePrefix`/`configurationPrefix` values so it can't collide with `HrManagement`/`WeatherForecast` if all three end up imported in the same app.
+3. Run `npm run generate:MyService_Api_Service` — see [Generating typed API clients](#generating-typed-api-clients-openapi-generator) for prerequisites and gotchas.
+4. Import the generated `<Prefix>ApiModule`/`<Prefix>ApiConfiguration` from `lib-api/api-MyService` wherever you need to call that service, providing the real base URL (localhost for dev, the deployed host for other environments — same caveat as [Scenario G](#scenario-g--point-the-shell-at-a-deployedstaging-mfe-instead-of-localhost) about this repo not having environment files yet).
+5. Re-run the same `npm run generate:...` command any time that backend's API contract changes — there's no watch mode; regeneration is a manual, on-demand step.
+
 ---
 
 ## Building for production
@@ -414,6 +480,9 @@ There's also a root `npm test` (defaults to whichever project `ng test` resolves
 | CORS error in the console when the shell tries to load a remote | Running the shell against a remote on a different origin/port without the remote's dev server allowing cross-origin requests | `ng serve`'s dev server allows this by default for `localhost`; if you're pointing at a non-localhost remote, that remote's server must send permissive CORS headers for `remoteEntry.js` and its chunks |
 | Blank white page with no console error at all | Silent failure inside a dynamically loaded remote's bootstrap, or a mismatched `type: 'module'` vs the remote's actual output format | Check the Network tab for a failed/successful load of `remoteEntry.js`, then check that MFE's own `ng serve` terminal output for compile errors |
 | `npm audit fix --force` unexpectedly changes Angular major version or breaks the build | `--force` will apply semver-major upgrades to satisfy audit fixes, ignoring peer dependency constraints | Revert via `git checkout -- package.json package-lock.json` (or re-run `npm install` after manually reviewing `npm audit`) and address audit findings individually instead |
+| `npm run generate:HrManagement_Api_Service` (or `WeatherForecast`) fails with a fetch/connection error | The target backend isn't running, or isn't listening on the exact port in the script (`7092`/`5256`) | Start that backend first (for `HrManagement`, run `HR.LeaveManagement.Api` from the sibling .NET repo) and confirm `http://localhost:<port>/swagger/v1/swagger.json` loads in a browser before re-running the generator |
+| `generate:...` fails with `spawn java ENOENT` or hangs downloading a `.jar` | No Java runtime on `PATH` — `openapi-generator-cli` needs one to run the underlying Java generator | Install a JDK/JRE (8+) and confirm `java -version` works, then re-run |
+| Generated code under `lib-api/` was clobbered / your manual fix disappeared | Anything under `lib-api/` is fully regenerated on every `npm run generate:...` | Don't hand-edit generated files — wrap/extend them from your own app code instead, or patch the OpenAPI spec / generator options if the generated shape itself is wrong |
 
 ---
 
