@@ -9,6 +9,9 @@
     "paths": {
       "lib1": [
         "./dist/lib1"
+      ],
+      "api-contract-leave-management": [
+        "./api-contracts/leaveManagement"
       ]
     },
     "noFallthroughCasesInSwitch": true,

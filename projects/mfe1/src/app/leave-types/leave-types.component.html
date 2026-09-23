@@ -1,0 +1,46 @@
+<section class="leave-types">
+    <h2>Leave Types</h2>
+
+    <form class="leave-type-form" (ngSubmit)="save()" #leaveTypeForm="ngForm">
+        <input name="name" placeholder="Name" required [(ngModel)]="form.name" />
+        <input name="defaultDays" type="number" min="1" max="100" required [(ngModel)]="form.defaultDays" />
+        <button type="submit" [disabled]="leaveTypeForm.invalid">{{ form.id ? 'Update' : 'Add' }}</button>
+        @if (form.id) {
+            <button type="button" (click)="resetForm()">Cancel</button>
+        }
+    </form>
+
+    @if (error()) {
+        <p class="error">{{ error() }}</p>
+    }
+
+    @if (loading()) {
+        <p>Loading…</p>
+    } @else {
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Default days</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (leaveType of leaveTypes(); track leaveType.id) {
+                    <tr>
+                        <td>{{ leaveType.name }}</td>
+                        <td>{{ leaveType.defaultDays }}</td>
+                        <td class="actions">
+                            <button type="button" (click)="edit(leaveType)">Edit</button>
+                            <button type="button" (click)="remove(leaveType)">Delete</button>
+                        </td>
+                    </tr>
+                } @empty {
+                    <tr>
+                        <td colspan="3">No leave types yet.</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</section>

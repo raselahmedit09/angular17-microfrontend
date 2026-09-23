@@ -1,0 +1,32 @@
+.leave-types {
+    max-width: 640px;
+    padding: 16px;
+}
+
+.leave-type-form {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th,
+td {
+    padding: 8px;
+    border-bottom: 1px solid #ddd;
+    text-align: left;
+}
+
+.actions {
+    display: flex;
+    gap: 4px;
+    justify-content: flex-end;
+}
+
+.error {
+    color: #c62828;
+}
