@@ -8,8 +8,7 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "run:all": "node node_modules/@angular-architects/module-federation/src/server/mf-dev-server.js",
-    "generate:WeatherForecast_Api_Service": "openapi-generator-cli generate -i http://localhost:5256/swagger/v1/swagger.json -g typescript-angular  -o lib-api/api-WeatherForecast -p=removeOperationIdPrefix=true --additional-properties=apiModulePrefix=WeatherForecast,configurationPrefix=WeatherForecastApi ",
-    "generate:HrManagement_Api_Service": "openapi-generator-cli generate -i http://localhost:7092/swagger/v1/swagger.json -g typescript-angular  -o lib-api/api-HrManagement -p=removeOperationIdPrefix=true --additional-properties=apiModulePrefix=HrManagement,configurationPrefix=HrManagementApi "
+    "generate:api:contract:leaveManagement": "node -e \"require('fs').rmSync('api-contracts/leaveManagement',{recursive:true,force:true})\" && node node_modules/@openapitools/openapi-generator-cli/main.js generate -i http://localhost:7092/swagger/v1/swagger.json -g typescript-angular -o api-contracts/leaveManagement -p=removeOperationIdPrefix=true --additional-properties=apiModulePrefix=LeaveManagement,configurationPrefix=LeaveManagementApi"
   },
   "private": true,
   "dependencies": {
@@ -23,7 +22,6 @@
     "@angular/platform-browser": "^17.3.0",
     "@angular/platform-browser-dynamic": "^17.3.0",
     "@angular/router": "^17.3.0",
-    "@raselahmedit09/lib1": "^0.0.1",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.14.3"
